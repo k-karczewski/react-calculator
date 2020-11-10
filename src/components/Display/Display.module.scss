@@ -1,0 +1,13 @@
+.display {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  flex-basis: 25%;
+  background-color: #ddd;
+  font-size: 30px;
+  padding: 4px 15px;
+
+  @media (min-width: 768px) {
+    font-size: 40px;
+  }
+}
