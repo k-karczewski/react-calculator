@@ -9,6 +9,7 @@ $hoverBreakpoint: 1024px;
   background-color: #ddd;
   border: 0;
   cursor: pointer;
+  font-size: 1em;
 
   &:hover {
     @media(min-width: $hoverBreakpoint) {
