@@ -1,6 +1,10 @@
 
 import React from 'react';
 
+import { Provider } from 'react-redux';
+
+import CalculatorStore from './_redux/stores/CalculatorStore';
+
 import { default as bemCssModules } from 'bem-css-modules';
 
 import Display from './components/Display/Display';
@@ -17,11 +21,13 @@ bemCssModules.setSettings({
 
 const App = () => {
   return (
-    <div className={style()}>
-      <Display />
-      <Memory />
-      <Keyboard />
-    </div>
+    <Provider store={CalculatorStore}>
+      <div className={style()}>
+        <Display />
+        <Memory />
+        <Keyboard />
+      </div>
+    </Provider>
   );
 }
 
