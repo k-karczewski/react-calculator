@@ -1,19 +1,18 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { default as bemCssModules } from 'bem-css-modules';
 
 import { default as DisplayStyles } from './Display.module.scss';
 
+import { useSelector } from 'react-redux';
+import { IRootStore } from '../../_redux/stores/Interfaces/IRootStore';
+
 const style = bemCssModules(DisplayStyles);
 
-interface RootState {
-  Display: string
-}
 
 const Display: React.FC = () => {
-  const displayValue = useSelector((state: RootState) => state.Display);
+  const displayValue = useSelector((store: IRootStore) => store.DisplayValue);
+
   return (
     <div className={style()}>{displayValue}</div>
   );
