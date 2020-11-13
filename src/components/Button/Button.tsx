@@ -6,17 +6,16 @@ import { default as ButtonStyles } from './Button.module.scss';
 
 const style = bemCssModules(ButtonStyles);
 
-type TCalculatorFunction = () => void;
-type TConcatenateFunction = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+type TButtonHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+// type TButtonHandler = () => void
 
 interface ButtonProps {
   text: string;
-  onClickHandler: TCalculatorFunction | TConcatenateFunction;
+  onClickHandler: TButtonHandler;
   isEqual?: boolean;
   isLighter?: boolean;
   isMemory?: boolean;
 }
-
 
 export const Button: React.FC<ButtonProps> = props => {
   const modifiers = {
@@ -25,11 +24,7 @@ export const Button: React.FC<ButtonProps> = props => {
     'is-memory': props.isMemory
   }
 
-  const onClickHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    props.onClickHandler(event)
-  }
-
   return (
-    <button className={style(modifiers)} onClick={onClickHandler}>{props.text}</button>
+    <button className={style(modifiers)} onClick={props.onClickHandler} value={props.text}>{props.text}</button>
   );
 }
