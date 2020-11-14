@@ -8,7 +8,7 @@ import { Button } from '../../components/Button/Button';
 
 import { default as KeyboardStyles } from './Keyboard.module.scss';
 
-import { SET_DISPLAY_VALUE, UPDATE_DISPLAY } from '../../_redux/actions/DisplayActions';
+import { DELETE_LAST_CHAR, SET_DISPLAY_VALUE, UPDATE_DISPLAY } from '../../_redux/actions/DisplayActions';
 import { IRootStore } from '../../_redux/stores/Interfaces/IRootStore';
 import { SET_OPERATION } from '../../_redux/actions/OperationActions';
 import { SET_NEW_OPERATION_CLICKED, UNSET_NEW_OPERATION_CLICKED } from '../../_redux/actions/IsOperationClickedActions';
@@ -33,6 +33,11 @@ export const Keyboard: React.FC = () => {
       dispatch({ type: SET_DISPLAY_VALUE, payload: { content: result } });
     }
   }, [dispatch, result])
+
+
+  const handleRemoveLastChar = () => {
+    dispatch({ type: DELETE_LAST_CHAR });
+  }
 
   const handleClickNumber = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (newOperationClicked) {
@@ -63,13 +68,13 @@ export const Keyboard: React.FC = () => {
     }
   }
 
-  const handleEqualsClick = () => {
-    if (currentOperation === '=') {
+  const handleEqualsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (currentOperation === event.currentTarget.value) {
 
     }
     else if (prevValue !== null) {
       dispatch({ type: SET_NEW_OPERATION_CLICKED })
-      dispatch({ type: SET_OPERATION, payload: { operation: '=' } });
+      dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
       dispatch({
         type: CALCULATE_RESULT_OF_TWO_NUMBERS,
         payload: {
@@ -86,7 +91,7 @@ export const Keyboard: React.FC = () => {
       <Button text="%" onClickHandler={() => console.log('')} />
       <Button text="CE" onClickHandler={() => console.log('')} />
       <Button text="C" onClickHandler={() => console.log('')} />
-      <Button text="<-" onClickHandler={() => console.log('')} />
+      <Button text="<-" onClickHandler={handleRemoveLastChar} />
       <Button text="1/x" onClickHandler={() => console.log('')} />
       <Button text="x2" onClickHandler={() => console.log('')} />
       <Button text="sqrt" onClickHandler={() => console.log('')} />
