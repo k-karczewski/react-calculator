@@ -26,10 +26,10 @@ export const Keyboard: React.FC = () => {
   const prevValue = useSelector((store: IRootStore) => store.PrevValue);
   const result = useSelector((store: IRootStore) => store.ResultValue);
 
+  // calls every change of result state
   useEffect(() => {
-    // update prevValue and display only when result has been calculated
+    // update display when result has been updated only 
     if (result !== null) {
-      dispatch({ type: SET_VALUE, payload: { value: result } });
       dispatch({ type: SET_DISPLAY_VALUE, payload: { content: result } });
     }
   }, [dispatch, result])
@@ -40,49 +40,59 @@ export const Keyboard: React.FC = () => {
   }
 
   const handleClickNumber = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (newOperationClicked) {
-      dispatch({ type: UNSET_NEW_OPERATION_CLICKED })
-    }
+    // if new operation has been clicked remove flag
+    if (newOperationClicked) dispatch({ type: UNSET_NEW_OPERATION_CLICKED })
+
+    // and show new typed value as new one on display
     dispatch({ type: UPDATE_DISPLAY, payload: { content: event.currentTarget.value, newOperationClicked: newOperationClicked } });
   }
 
   const handleOperationClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!newOperationClicked) {
+      // new operation has been clicked - remember state and operation value
       dispatch({ type: SET_NEW_OPERATION_CLICKED })
       dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
 
-      if (prevValue === null) {
-        dispatch({ type: SET_VALUE, payload: { value: displayValue } })
-      } else {
-        dispatch({
-          type: CALCULATE_RESULT_OF_TWO_NUMBERS,
-          payload: {
-            leftValue: prevValue,
-            rightValue: displayValue,
-            operation: currentOperation
-          }
-        });
-      }
+      /* If no left value of operation is saved yet take display value and perform
+      * addition with 0 and the result will be saved as left value.
+      * If left value is saved already take it as left value and perform
+      * current clicked operation with value taken from display */
+      const leftValue = result !== null ? result : displayValue;
+      const rightValue = result !== null ? displayValue : '0';
+      const operationToPerform = result !== null ? currentOperation : '+';
+
+      dispatch({
+        type: CALCULATE_RESULT_OF_TWO_NUMBERS,
+        payload: {
+          leftValue: leftValue,
+          rightValue: rightValue,
+          operation: operationToPerform
+        }
+      });
     } else if (event.currentTarget.value !== currentOperation) {
       dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
     }
   }
 
   const handleEqualsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (currentOperation === event.currentTarget.value) {
+    const leftValue = result;
+    // if equals has been clicked again perform last operation
+    const rightValue = newOperationClicked ? prevValue : displayValue;
 
-    }
-    else if (prevValue !== null) {
+    dispatch({
+      type: CALCULATE_RESULT_OF_TWO_NUMBERS,
+      payload: {
+        leftValue: leftValue,
+        rightValue: rightValue,
+        operation: currentOperation
+      }
+    });
+
+    if (rightValue === displayValue) {
+      // equals button has been clicked first time - remember state
       dispatch({ type: SET_NEW_OPERATION_CLICKED })
-      dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
-      dispatch({
-        type: CALCULATE_RESULT_OF_TWO_NUMBERS,
-        payload: {
-          leftValue: prevValue,
-          rightValue: displayValue,
-          operation: currentOperation
-        }
-      });
+      // remember right value
+      dispatch({ type: SET_VALUE, payload: { value: rightValue } });
     }
   }
 
