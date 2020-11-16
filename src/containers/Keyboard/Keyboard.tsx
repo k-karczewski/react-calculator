@@ -47,6 +47,25 @@ export const Keyboard: React.FC = () => {
     dispatch({ type: UPDATE_DISPLAY, payload: { content: event.currentTarget.value, newOperationClicked: newOperationClicked } });
   }
 
+  const handleChangeSign = () => {
+    // if display shows saved calculation result
+    if (displayValue === result) {
+      dispatch({
+        type: CALCULATE_RESULT_OF_TWO_NUMBERS,
+        payload: {
+          leftValue: result,
+          rightValue: '-1',
+          operation: '*'
+        }
+      });
+    }
+    // if display shows not saved newly typed value  
+    else {
+      const changedSignValue = String(Number(displayValue) * -1);
+      dispatch({ type: SET_DISPLAY_VALUE, payload: { content: changedSignValue } })
+    }
+  }
+
   const handleOperationClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!newOperationClicked) {
       // new operation has been clicked - remember state and operation value
@@ -118,7 +137,7 @@ export const Keyboard: React.FC = () => {
       <Button text="2" onClickHandler={handleClickNumber} />
       <Button text="3" onClickHandler={handleClickNumber} />
       <Button text="+" onClickHandler={handleOperationClick} />
-      <Button text="+/-" onClickHandler={() => console.log('')} />
+      <Button text="+/-" onClickHandler={handleChangeSign} />
       <Button text="0" onClickHandler={handleClickNumber} />
       <Button text="." onClickHandler={handleClickNumber} />
       <Button text="=" onClickHandler={handleEqualsClick} isEqual />
