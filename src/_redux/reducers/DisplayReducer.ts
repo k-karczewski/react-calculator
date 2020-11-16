@@ -15,8 +15,13 @@ export const DisplayReducer = (state: string = defaultValue, action: IDisplayAct
     case UPDATE_DISPLAY: {
       if (action.payload) {
         if (state === defaultValue || action.payload?.newOperationClicked) {
-          return action.payload?.content;
-        } else {
+          if (state === defaultValue && action.payload.content === '.') {
+            return '0.'
+          } else {
+            return action.payload?.content;
+          }
+        }
+        else {
           return state += action.payload?.content;
         }
       } else {

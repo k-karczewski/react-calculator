@@ -110,7 +110,7 @@ export const Keyboard: React.FC = () => {
       <Button text="+" onClickHandler={handleOperationClick} />
       <Button text="+/-" onClickHandler={() => console.log('')} />
       <Button text="0" onClickHandler={handleClickNumber} />
-      <Button text="." onClickHandler={() => console.log('')} />
+      <Button text="." onClickHandler={handleClickNumber} />
       <Button text="=" onClickHandler={handleEqualsClick} isEqual />
     </div>
   );
