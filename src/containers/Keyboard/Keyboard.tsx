@@ -13,7 +13,8 @@ import { IRootStore } from '../../_redux/stores/Interfaces/IRootStore';
 import { SET_OPERATION } from '../../_redux/actions/OperationActions';
 import { SET_NEW_OPERATION_CLICKED, UNSET_NEW_OPERATION_CLICKED } from '../../_redux/actions/IsOperationClickedActions';
 import { SET_VALUE } from '../../_redux/actions/PrevValueActions';
-import { CALCULATE_RESULT_OF_TWO_NUMBERS } from '../../_redux/actions/ResultActions';
+import { CALCULATE_RESULT_OF_TWO_NUMBERS, CALCULATE_ONE_NUMBERED_OPERATION } from '../../_redux/actions/ResultActions';
+import { RESET_CALCULATOR } from '../../_redux/actions/CalculatorActions';
 
 const style = bemCssModules(KeyboardStyles);
 
@@ -34,6 +35,14 @@ export const Keyboard: React.FC = () => {
     }
   }, [dispatch, result])
 
+
+  const handleClearEntry = () => {
+    dispatch({ type: SET_DISPLAY_VALUE, payload: { content: '0' } })
+  }
+
+  const clearCalculator = () => {
+    dispatch({ type: RESET_CALCULATOR })
+  }
 
   const handleRemoveLastChar = () => {
     dispatch({ type: DELETE_LAST_CHAR });
@@ -66,6 +75,36 @@ export const Keyboard: React.FC = () => {
     }
   }
 
+  const handleSpecialOperations = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const operation = event.currentTarget.value;
+
+    // if result of calculation has been inverted
+    if (displayValue === result) {
+      dispatch({
+        type: CALCULATE_ONE_NUMBERED_OPERATION,
+        payload: {
+          leftValue: displayValue,
+          operation: operation
+        }
+      });
+    } else {
+      // if right value of operation has been inverted update display only
+      let result: string = '0';
+      switch (operation) {
+        case '1/x':
+          result = String(1 / Number(displayValue));
+          break;
+        case 'sqrt':
+          result = String(Math.sqrt(Number(displayValue)));
+          break;
+        case 'x2':
+          result = String(Math.pow(Number(displayValue), 2));
+      }
+
+      dispatch({ type: SET_DISPLAY_VALUE, payload: { content: result } })
+    }
+  }
+
   const handleOperationClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!newOperationClicked) {
       // new operation has been clicked - remember state and operation value
@@ -93,7 +132,7 @@ export const Keyboard: React.FC = () => {
     }
   }
 
-  const handleEqualsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleEqualsClick = () => {
     const leftValue = result;
     // if equals has been clicked again perform last operation
     const rightValue = newOperationClicked ? prevValue : displayValue;
@@ -118,12 +157,12 @@ export const Keyboard: React.FC = () => {
   return (
     <div className={style()}>
       <Button text="%" onClickHandler={() => console.log('')} />
-      <Button text="CE" onClickHandler={() => console.log('')} />
-      <Button text="C" onClickHandler={() => console.log('')} />
+      <Button text="CE" onClickHandler={handleClearEntry} />
+      <Button text="C" onClickHandler={clearCalculator} />
       <Button text="<-" onClickHandler={handleRemoveLastChar} />
-      <Button text="1/x" onClickHandler={() => console.log('')} />
-      <Button text="x2" onClickHandler={() => console.log('')} />
-      <Button text="sqrt" onClickHandler={() => console.log('')} />
+      <Button text="1/x" onClickHandler={handleSpecialOperations} />
+      <Button text="x2" onClickHandler={handleSpecialOperations} />
+      <Button text="sqrt" onClickHandler={handleSpecialOperations} />
       <Button text="/" onClickHandler={handleOperationClick} />
       <Button text="7" onClickHandler={handleClickNumber} />
       <Button text="8" onClickHandler={handleClickNumber} />

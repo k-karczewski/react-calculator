@@ -1,5 +1,6 @@
 import { IDisplayAction } from '../actions/Interfaces/ICalculatorAction';
 import { UPDATE_DISPLAY, SET_DISPLAY_VALUE, DELETE_LAST_CHAR } from '../actions/DisplayActions';
+import { RESET_CALCULATOR } from '../actions/CalculatorActions';
 
 const defaultValue = '0';
 
@@ -28,12 +29,14 @@ export const DisplayReducer = (state: string = defaultValue, action: IDisplayAct
         return state;
       }
     }
-    case SET_DISPLAY_VALUE:
+    case SET_DISPLAY_VALUE: {
       if (action.payload) {
         return action.payload?.content
       } else {
         return state;
       }
+    }
+    case RESET_CALCULATOR: return defaultValue;
     default:
       return state;
   }

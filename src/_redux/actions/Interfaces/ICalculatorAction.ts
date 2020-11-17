@@ -1,8 +1,12 @@
+export interface ICalculatorAction {
+  type: string
+}
+
 export interface ICalculateResultAction {
   type: string,
   payload: {
     leftValue: string,
-    rightValue: string,
+    rightValue?: string,
     operation: string
   }
 }
@@ -15,17 +19,16 @@ export interface IDisplayAction {
   }
 }
 
+export interface IIsOperationClicked {
+  type: string
+}
+
 export interface IOperationAction {
   type: string,
   payload?: {
     operation: string
   }
 }
-
-export interface IIsOperationClicked {
-  type: string
-}
-
 
 export interface IPrevValueAction {
   type: string,
