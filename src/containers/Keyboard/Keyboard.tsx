@@ -89,19 +89,23 @@ export const Keyboard: React.FC = () => {
       });
     } else {
       // if right value of operation has been inverted update display only
-      let result: string = '0';
+      let returnValue: string = '0';
       switch (operation) {
         case '1/x':
-          result = String(1 / Number(displayValue));
+          returnValue = String(1 / Number(displayValue));
           break;
         case 'sqrt':
-          result = String(Math.sqrt(Number(displayValue)));
+          returnValue = String(Math.sqrt(Number(displayValue)));
           break;
         case 'x2':
-          result = String(Math.pow(Number(displayValue), 2));
+          returnValue = String(Math.pow(Number(displayValue), 2));
+          break;
+        case '%':
+          returnValue = String(Number(displayValue) * Number(result) / 100)
+          break;
       }
 
-      dispatch({ type: SET_DISPLAY_VALUE, payload: { content: result } })
+      dispatch({ type: SET_DISPLAY_VALUE, payload: { content: returnValue } })
     }
   }
 
@@ -156,7 +160,7 @@ export const Keyboard: React.FC = () => {
 
   return (
     <div className={style()}>
-      <Button text="%" onClickHandler={() => console.log('')} />
+      <Button text="%" onClickHandler={handleSpecialOperations} />
       <Button text="CE" onClickHandler={handleClearEntry} />
       <Button text="C" onClickHandler={clearCalculator} />
       <Button text="<-" onClickHandler={handleRemoveLastChar} />
