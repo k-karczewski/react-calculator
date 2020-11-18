@@ -4,4 +4,5 @@ export interface IRootStore {
   DisplayValue: string,
   PrevValue: string | null
   ResultValue: string | null
+  SubDisplayValue: string
 }
