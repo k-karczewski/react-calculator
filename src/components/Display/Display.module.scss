@@ -1,11 +1,17 @@
 .display {
   display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  flex-basis: 25%;
+  flex-direction: column;
+  justify-content: center;
+  height: 25%;
   background-color: #ddd;
   font-size: 30px;
   padding: 4px 15px;
+
+  & p {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
 
   @media (min-width: 768px) {
     font-size: 40px;
