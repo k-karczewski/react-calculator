@@ -25,12 +25,19 @@ $hoverBreakpoint: 1024px;
     background-color: #eee;
   }
 
+
   &--is-memory {
     width: 30px;
     height: 30px;
     margin-bottom: 2px;
     margin-left: 20px;
     background-color: #ccc;
+
+    &:disabled {
+      color: #888;
+      pointer-events: none;
+    }
+
   }
 
   &--is-equal {

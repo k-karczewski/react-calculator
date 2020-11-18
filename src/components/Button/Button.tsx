@@ -15,6 +15,7 @@ interface ButtonProps {
   isEqual?: boolean;
   isLighter?: boolean;
   isMemory?: boolean;
+  disabled?: boolean
 }
 
 export const Button: React.FC<ButtonProps> = props => {
@@ -25,6 +26,6 @@ export const Button: React.FC<ButtonProps> = props => {
   }
 
   return (
-    <button className={style(modifiers)} onClick={props.onClickHandler} value={props.text}>{props.text}</button>
+    <button className={style(modifiers)} onClick={props.onClickHandler} value={props.text} disabled={props.disabled}>{props.text}</button>
   );
 }
