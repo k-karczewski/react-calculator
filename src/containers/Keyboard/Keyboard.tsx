@@ -15,6 +15,8 @@ import { SET_NEW_OPERATION_CLICKED, UNSET_NEW_OPERATION_CLICKED } from '../../_r
 import { SET_VALUE } from '../../_redux/actions/PrevValueActions';
 import { CALCULATE_RESULT_OF_TWO_NUMBERS, CALCULATE_ONE_NUMBERED_OPERATION } from '../../_redux/actions/ResultActions';
 import { RESET_CALCULATOR } from '../../_redux/actions/CalculatorActions';
+import { CLEAR_SUBDISPLAY, SET_SUBDISPLAY_VALUE, UPDATE_SUBDISPLAY } from '../../_redux/actions/SubDisplayActions';
+
 
 const style = bemCssModules(KeyboardStyles);
 
@@ -41,7 +43,8 @@ export const Keyboard: React.FC = () => {
   }
 
   const clearCalculator = () => {
-    dispatch({ type: RESET_CALCULATOR })
+    dispatch({ type: RESET_CALCULATOR });
+    dispatch({ type: CLEAR_SUBDISPLAY });
   }
 
   const handleRemoveLastChar = () => {
@@ -134,6 +137,13 @@ export const Keyboard: React.FC = () => {
     } else if (event.currentTarget.value !== currentOperation) {
       dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
     }
+
+    if (result === displayValue) {
+      dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${displayValue} ${event.currentTarget.value} ` } });
+    } else {
+      dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} ${event.currentTarget.value}` } });
+    }
+
   }
 
   const handleEqualsClick = () => {
@@ -155,6 +165,9 @@ export const Keyboard: React.FC = () => {
       dispatch({ type: SET_NEW_OPERATION_CLICKED })
       // remember right value
       dispatch({ type: SET_VALUE, payload: { value: rightValue } });
+      dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} = ` } })
+    } else {
+      dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${leftValue} ${currentOperation} ${rightValue} = ` } })
     }
   }
 
