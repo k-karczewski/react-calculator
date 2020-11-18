@@ -23,6 +23,13 @@ export interface IIsOperationClicked {
   type: string
 }
 
+export interface IMemoryAction {
+  type: string,
+  payload?: {
+    value: string
+  }
+}
+
 export interface IOperationAction {
   type: string,
   payload?: {
