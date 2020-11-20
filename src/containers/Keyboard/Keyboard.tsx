@@ -151,23 +151,26 @@ export const Keyboard: React.FC = () => {
     // if equals has been clicked again perform last operation
     const rightValue = newOperationClicked ? prevValue : displayValue;
 
-    dispatch({
-      type: CALCULATE_RESULT_OF_TWO_NUMBERS,
-      payload: {
-        leftValue: leftValue,
-        rightValue: rightValue,
-        operation: currentOperation
-      }
-    });
 
-    if (rightValue === displayValue) {
-      // equals button has been clicked first time - remember state
-      dispatch({ type: SET_NEW_OPERATION_CLICKED })
-      // remember right value
-      dispatch({ type: SET_VALUE, payload: { value: rightValue } });
-      dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} = ` } })
-    } else {
-      dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${leftValue} ${currentOperation} ${rightValue} = ` } })
+    if (leftValue && rightValue && currentOperation) {
+      dispatch({
+        type: CALCULATE_RESULT_OF_TWO_NUMBERS,
+        payload: {
+          leftValue: leftValue,
+          rightValue: rightValue,
+          operation: currentOperation
+        }
+      });
+
+      if (rightValue === displayValue) {
+        // equals button has been clicked first time - remember state
+        dispatch({ type: SET_NEW_OPERATION_CLICKED })
+        // remember right value
+        dispatch({ type: SET_VALUE, payload: { value: rightValue } });
+        dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} = ` } })
+      } else {
+        dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${leftValue} ${currentOperation} ${rightValue} = ` } })
+      }
     }
   }
 

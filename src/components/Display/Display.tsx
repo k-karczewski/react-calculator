@@ -17,7 +17,7 @@ const Display: React.FC = () => {
   return (
     <div className={style()}>
       <SubDisplay />
-      <p className={style('p')}>{displayValue}</p>
+      <p>{displayValue}</p>
     </div>
   );
 }
