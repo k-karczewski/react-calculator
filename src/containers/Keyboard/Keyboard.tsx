@@ -153,8 +153,7 @@ export const Keyboard: React.FC = () => {
   const handleEqualsClick = () => {
     const leftValue = result;
     // if equals has been clicked again perform last operation
-    const rightValue = newOperationClicked ? prevValue : displayValue;
-
+    const rightValue = newOperationClicked && prevValue ? prevValue : displayValue;
 
     if (leftValue && rightValue && currentOperation) {
       dispatch({
