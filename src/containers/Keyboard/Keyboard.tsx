@@ -28,6 +28,7 @@ export const Keyboard: React.FC = () => {
   const newOperationClicked = useSelector((store: IRootStore) => store.IsNewOperationClicked);
   const prevValue = useSelector((store: IRootStore) => store.PrevValue);
   const result = useSelector((store: IRootStore) => store.ResultValue);
+  const subDisplayValue = useSelector((store: IRootStore) => store.SubDisplayValue);
 
   // calls every change of result state
   useEffect(() => {
@@ -134,16 +135,19 @@ export const Keyboard: React.FC = () => {
           operation: operationToPerform
         }
       });
+
+      if (result === null) {
+        dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${displayValue} ${event.currentTarget.value} ` } });
+      } else {
+
+        dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} ${event.currentTarget.value}` } });
+      }
+
     } else if (event.currentTarget.value !== currentOperation) {
+      const updatedSubdisplayValue = `${subDisplayValue.slice(0, subDisplayValue.length - 2)} ${event.currentTarget.value} `;
       dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
+      dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${updatedSubdisplayValue}` } })
     }
-
-    if (result === displayValue) {
-      dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${displayValue} ${event.currentTarget.value} ` } });
-    } else {
-      dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} ${event.currentTarget.value}` } });
-    }
-
   }
 
   const handleEqualsClick = () => {
