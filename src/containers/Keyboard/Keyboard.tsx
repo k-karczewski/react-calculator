@@ -12,11 +12,10 @@ import { DELETE_LAST_CHAR, SET_DISPLAY_VALUE, UPDATE_DISPLAY } from '../../_redu
 import { IRootStore } from '../../_redux/stores/Interfaces/IRootStore';
 import { SET_OPERATION } from '../../_redux/actions/OperationActions';
 import { SET_NEW_OPERATION_CLICKED, UNSET_NEW_OPERATION_CLICKED } from '../../_redux/actions/IsOperationClickedActions';
-import { SET_VALUE } from '../../_redux/actions/PrevValueActions';
+import { CLEAR_VALUE, SET_VALUE } from '../../_redux/actions/PrevValueActions';
 import { CALCULATE_RESULT_OF_TWO_NUMBERS, CALCULATE_ONE_NUMBERED_OPERATION } from '../../_redux/actions/ResultActions';
 import { RESET_CALCULATOR } from '../../_redux/actions/CalculatorActions';
 import { CLEAR_SUBDISPLAY, SET_SUBDISPLAY_VALUE, UPDATE_SUBDISPLAY } from '../../_redux/actions/SubDisplayActions';
-
 
 const style = bemCssModules(KeyboardStyles);
 
@@ -49,7 +48,11 @@ export const Keyboard: React.FC = () => {
   }
 
   const handleRemoveLastChar = () => {
-    dispatch({ type: DELETE_LAST_CHAR });
+    if (displayValue === result && subDisplayValue) {
+      dispatch({ type: CLEAR_SUBDISPLAY });
+    } else {
+      dispatch({ type: DELETE_LAST_CHAR });
+    }
   }
 
   const handleClickNumber = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -139,14 +142,22 @@ export const Keyboard: React.FC = () => {
       if (result === null) {
         dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${displayValue} ${event.currentTarget.value} ` } });
       } else {
-
-        dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} ${event.currentTarget.value}` } });
+        dispatch({ type: UPDATE_SUBDISPLAY, payload: { content: `${displayValue} ${event.currentTarget.value} ` } });
       }
 
-    } else if (event.currentTarget.value !== currentOperation) {
-      const updatedSubdisplayValue = `${subDisplayValue.slice(0, subDisplayValue.length - 2)} ${event.currentTarget.value} `;
-      dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
+    } else {
+      let updatedSubdisplayValue: string = '';
+      if (subDisplayValue.indexOf('=') !== -1) {
+        updatedSubdisplayValue = `${result} ${event.currentTarget.value} `;
+        dispatch({ type: CLEAR_VALUE });
+      } else {
+        updatedSubdisplayValue = `${subDisplayValue.slice(0, subDisplayValue.length - 2)} ${event.currentTarget.value} `;
+      }
+
       dispatch({ type: SET_SUBDISPLAY_VALUE, payload: { content: `${updatedSubdisplayValue}` } })
+      if (currentOperation !== event.currentTarget.value) {
+        dispatch({ type: SET_OPERATION, payload: { operation: event.currentTarget.value } });
+      }
     }
   }
 
@@ -164,7 +175,6 @@ export const Keyboard: React.FC = () => {
           operation: currentOperation
         }
       });
-
       if (rightValue === displayValue) {
         // equals button has been clicked first time - remember state
         dispatch({ type: SET_NEW_OPERATION_CLICKED })
