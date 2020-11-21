@@ -111,7 +111,7 @@ export const Keyboard: React.FC = () => {
           returnValue = String(Number(displayValue) * Number(result) / 100)
           break;
       }
-
+      dispatch({ type: UNSET_NEW_OPERATION_CLICKED })
       dispatch({ type: SET_DISPLAY_VALUE, payload: { content: returnValue } })
     }
   }
