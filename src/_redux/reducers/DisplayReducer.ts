@@ -1,10 +1,13 @@
-import { IDisplayAction } from '../actions/Interfaces/ICalculatorActions';
+//actions import
+import { RESET_CALCULATOR } from '../actions/CalculatorActions';
 import {
   DELETE_LAST_CHAR_FROM_RESULT_DISPLAY, SET_RESULT_DISPLAY_VALUE, UPDATE_RESULT_DISPLAY_VALUE,
   CLEAR_HISTORY_DISPLAY_VALUE, SET_HISTORY_DISPLAY_VALUE, UPDATE_HISTORY_DISPLAY_VALUE
 } from '../actions/DisplayActions';
-import { RESET_CALCULATOR } from '../actions/CalculatorActions';
+
+// interfaces import
 import { IDisplayState } from './Interfaces/ICalculatorReducers';
+import { IDisplayAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState: IDisplayState = {
   isHistoryUpdated: false,

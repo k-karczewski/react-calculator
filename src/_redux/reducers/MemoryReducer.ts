@@ -1,5 +1,8 @@
-import { IMemoryAction } from '../actions/Interfaces/ICalculatorActions';
+//actions import
 import { ADD_VALUE_TO_MEMORY, CLEAR_VALUE_FROM_MEMORY, SAVE_VALUE_IN_MEMORY, SUB_VALUE_FROM_MEMORY } from '../actions/MemoryActions';
+
+// interfaces import
+import { IMemoryAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState: string | null = null
 

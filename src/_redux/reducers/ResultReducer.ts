@@ -1,6 +1,9 @@
+// actions import
 import { RESET_CALCULATOR } from '../actions/CalculatorActions';
-import { ICalculateResultAction } from '../actions/Interfaces/ICalculatorActions';
 import { CALCULATE_ONE_NUMBERED_OPERATION, CALCULATE_RESULT_OF_TWO_NUMBERS, REMEMBER_VALUE_WITHOUT_CALCULATION } from '../actions/ResultActions';
+
+// interfaces import
+import { ICalculateResultAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState = null;
 

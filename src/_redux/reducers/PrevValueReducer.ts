@@ -1,6 +1,9 @@
+//actions import
 import { RESET_CALCULATOR } from '../actions/CalculatorActions';
-import { IPrevValueAction } from '../actions/Interfaces/ICalculatorActions';
 import { CLEAR_VALUE, SET_VALUE } from '../actions/PrevValueActions';
+
+// interfaces import
+import { IPrevValueAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState = null;
 
