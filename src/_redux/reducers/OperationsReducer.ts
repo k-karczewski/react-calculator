@@ -10,7 +10,6 @@ const defaultState: IOperationState = {
   equalsClicked: false,
   newOperationClicked: false,
   operation: null,
-  // specialOperationClicked: false
 };
 
 export const OperationsReducer = (state: IOperationState = defaultState, action: IOperationAction): IOperationState => {
