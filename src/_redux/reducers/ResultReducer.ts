@@ -1,6 +1,6 @@
 import { RESET_CALCULATOR } from '../actions/CalculatorActions';
-import { ICalculateResultAction } from '../actions/Interfaces/ICalculatorAction';
-import { CALCULATE_ONE_NUMBERED_OPERATION, CALCULATE_RESULT_OF_TWO_NUMBERS } from '../actions/ResultActions';
+import { ICalculateResultAction } from '../actions/Interfaces/ICalculatorActions';
+import { CALCULATE_ONE_NUMBERED_OPERATION, CALCULATE_RESULT_OF_TWO_NUMBERS, REMEMBER_VALUE_WITHOUT_CALCULATION } from '../actions/ResultActions';
 
 const defaultValue = null;
 
@@ -8,15 +8,20 @@ export const ResultReducer = (state: string | null = defaultValue, action: ICalc
 
   switch (action.type) {
     case CALCULATE_ONE_NUMBERED_OPERATION: {
-      return performOneNumberedCalculation(action.payload.leftValue, action.payload.operation);
+      if (action.payload.operation) {
+        return performOneNumberedCalculation(action.payload.leftValue, action.payload.operation);
+      } else {
+        return state;
+      }
     }
     case CALCULATE_RESULT_OF_TWO_NUMBERS: {
-      if (action.payload.rightValue) {
+      if (action.payload.operation && action.payload.rightValue) {
         return performTwoNumberedCalculation(action.payload.leftValue, action.payload.rightValue, action.payload.operation);
       } else {
         return state;
       }
     }
+    case REMEMBER_VALUE_WITHOUT_CALCULATION: return action.payload.leftValue;
     case RESET_CALCULATOR: return defaultValue;
     default: return state;
   }

@@ -1,42 +1,58 @@
-import { IDisplayAction } from '../actions/Interfaces/ICalculatorAction';
-import { UPDATE_DISPLAY, SET_DISPLAY_VALUE, DELETE_LAST_CHAR } from '../actions/DisplayActions';
+import { IDisplayAction } from '../actions/Interfaces/ICalculatorActions';
+import {
+  DELETE_LAST_CHAR_FROM_RESULT_DISPLAY, SET_RESULT_DISPLAY_VALUE, UPDATE_RESULT_DISPLAY_VALUE,
+  CLEAR_HISTORY_DISPLAY_VALUE, SET_HISTORY_DISPLAY_VALUE, UPDATE_HISTORY_DISPLAY_VALUE
+} from '../actions/DisplayActions';
 import { RESET_CALCULATOR } from '../actions/CalculatorActions';
+import { IDisplayState } from './Interfaces/ICalculatorReducers';
 
-const defaultValue = '0';
+const defaultState: IDisplayState = {
+  isHistoryUpdated: false,
+  historyDisplayValue: '0',
+  resultDisplayValue: '0'
+};
 
-export const DisplayReducer = (state: string = defaultValue, action: IDisplayAction): string => {
+export const DisplayReducer = (state: IDisplayState = defaultState, action: IDisplayAction): IDisplayState => {
   switch (action.type) {
-    case DELETE_LAST_CHAR: {
-      if (state.length > 1) {
-        return state.slice(0, state.length - 1);
+    case DELETE_LAST_CHAR_FROM_RESULT_DISPLAY: {
+      if (state.resultDisplayValue.length > 1) {
+        return { ...state, resultDisplayValue: state.resultDisplayValue.slice(0, state.resultDisplayValue.length - 1) };
       } else {
-        return defaultValue;
+        return defaultState;
       }
     }
-    case UPDATE_DISPLAY: {
+    case SET_RESULT_DISPLAY_VALUE: {
       if (action.payload) {
-        if (state === defaultValue || action.payload?.newOperationClicked) {
-          if (state === defaultValue && action.payload.content === '.') {
-            return '0.'
+        return { ...state, resultDisplayValue: action.payload.content };
+      } else {
+        return state;
+      }
+    }
+    case UPDATE_RESULT_DISPLAY_VALUE: {
+      if (action.payload) {
+        if (state.resultDisplayValue === defaultState.resultDisplayValue || action.payload?.newOperationClicked) {
+          if (state.resultDisplayValue === defaultState.resultDisplayValue && action.payload.content === '.') {
+            return { ...state, resultDisplayValue: '0.' };
           } else {
-            return action.payload?.content;
+            return { ...state, resultDisplayValue: action.payload?.content };
           }
         }
         else {
-          return state += action.payload?.content;
+          return { ...state, resultDisplayValue: state.resultDisplayValue += action.payload?.content };
         }
       } else {
         return state;
       }
     }
-    case SET_DISPLAY_VALUE: {
+    case CLEAR_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: defaultState.historyDisplayValue };
+    case UPDATE_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: `${state.historyDisplayValue}${action.payload?.content}` };
+    case SET_HISTORY_DISPLAY_VALUE:
       if (action.payload) {
-        return action.payload?.content
+        return { ...state, historyDisplayValue: action.payload?.content }
       } else {
         return state;
       }
-    }
-    case RESET_CALCULATOR: return defaultValue;
+    case RESET_CALCULATOR: return defaultState;
     default:
       return state;
   }

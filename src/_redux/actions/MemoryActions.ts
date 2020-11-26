@@ -1,4 +1,4 @@
-import { IMemoryAction } from '../actions/Interfaces/ICalculatorAction';
+import { IMemoryAction } from './Interfaces/ICalculatorActions';
 
 export const ADD_VALUE_TO_MEMORY = 'ADD_VALUE_TO_MEMORY';
 export const CLEAR_VALUE_FROM_MEMORY = 'CLEAR_VALUE_FROM_MEMORY';

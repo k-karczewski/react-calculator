@@ -1,9 +1,9 @@
+import { IOperationState } from "../../reducers/Interfaces/ICalculatorReducers";
+
 export interface IRootStore {
-  CurrentOperation: string | null;
-  DisplayValue: string;
-  IsNewOperationClicked: boolean;
-  MemoryValue: string | null;
-  PrevValue: string | null;
-  ResultValue: string | null;
-  SubDisplayValue: string;
+  operationsState: IOperationState;
+  displayValue: string;
+  memoryValue: string | null;
+  prevValue: string | null;
+  resultValue: string | null;
 }

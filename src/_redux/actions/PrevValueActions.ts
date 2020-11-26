@@ -1,4 +1,4 @@
-import { IPrevValueAction } from "./Interfaces/ICalculatorAction";
+import { IPrevValueAction } from "./Interfaces/ICalculatorActions";
 
 export const CLEAR_VALUE = 'CLEAR_VALUE';
 export const SET_VALUE = 'SET_VALUE';

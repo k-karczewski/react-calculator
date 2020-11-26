@@ -7,7 +7,7 @@ export interface ICalculateResultAction {
   payload: {
     leftValue: string,
     rightValue?: string,
-    operation: string
+    operation?: string
   }
 }
 
@@ -17,10 +17,6 @@ export interface IDisplayAction {
     content: string,
     newOperationClicked?: boolean
   }
-}
-
-export interface IIsOperationClicked {
-  type: string
 }
 
 export interface IMemoryAction {

@@ -1,4 +1,4 @@
-import { ICalculatorAction } from '../actions/Interfaces/ICalculatorAction';
+import { ICalculatorAction } from './Interfaces/ICalculatorActions';
 
 export const RESET_CALCULATOR = 'RESET_CALCULATOR';
 
