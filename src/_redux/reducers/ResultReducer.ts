@@ -2,9 +2,9 @@ import { RESET_CALCULATOR } from '../actions/CalculatorActions';
 import { ICalculateResultAction } from '../actions/Interfaces/ICalculatorActions';
 import { CALCULATE_ONE_NUMBERED_OPERATION, CALCULATE_RESULT_OF_TWO_NUMBERS, REMEMBER_VALUE_WITHOUT_CALCULATION } from '../actions/ResultActions';
 
-const defaultValue = null;
+const defaultState = null;
 
-export const ResultReducer = (state: string | null = defaultValue, action: ICalculateResultAction): string | null => {
+export const ResultReducer = (state: string | null = defaultState, action: ICalculateResultAction): string | null => {
 
   switch (action.type) {
     case CALCULATE_ONE_NUMBERED_OPERATION: {
@@ -22,7 +22,7 @@ export const ResultReducer = (state: string | null = defaultValue, action: ICalc
       }
     }
     case REMEMBER_VALUE_WITHOUT_CALCULATION: return action.payload.leftValue;
-    case RESET_CALCULATOR: return defaultValue;
+    case RESET_CALCULATOR: return defaultState;
     default: return state;
   }
 }

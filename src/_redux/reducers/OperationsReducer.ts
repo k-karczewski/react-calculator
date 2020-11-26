@@ -6,14 +6,14 @@ import { SET_NEW_OPERATION, SET_EQUALS_CLICKED, UNSET_EQUALS_CLICKED, UNSET_NEW_
 import { IOperationState } from './Interfaces/ICalculatorReducers';
 import { IOperationAction } from '../actions/Interfaces/ICalculatorActions';
 
-const defaultValue: IOperationState = {
+const defaultState: IOperationState = {
   equalsClicked: false,
   newOperationClicked: false,
   operation: null,
   // specialOperationClicked: false
 };
 
-export const OperationsReducer = (state: IOperationState = defaultValue, action: IOperationAction): IOperationState => {
+export const OperationsReducer = (state: IOperationState = defaultState, action: IOperationAction): IOperationState => {
   switch (action.type) {
     case SET_NEW_OPERATION:
       if (action.payload) return { equalsClicked: false, newOperationClicked: true, operation: action.payload?.operation }
@@ -28,7 +28,7 @@ export const OperationsReducer = (state: IOperationState = defaultValue, action:
     case UNSET_NEW_OPERATION_CLICKED:
       return { ...state, equalsClicked: false, newOperationClicked: false };
 
-    case RESET_CALCULATOR: return defaultValue;
+    case RESET_CALCULATOR: return defaultState;
     default: return state;
   }
 }
