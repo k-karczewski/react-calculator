@@ -1,8 +1,8 @@
-import { IOperationState } from "../../reducers/Interfaces/ICalculatorReducers";
+import { IDisplayState, IOperationState } from "../../reducers/Interfaces/ICalculatorReducers";
 
 export interface IRootStore {
   operationsState: IOperationState;
-  displayValue: string;
+  displayState: IDisplayState;
   memoryValue: string | null;
   prevValue: string | null;
   resultValue: string | null;
