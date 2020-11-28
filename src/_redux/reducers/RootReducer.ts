@@ -8,7 +8,7 @@ import { ResultReducer } from './ResultReducer';
 
 export const RootReducer = combineReducers({
   operationsState: OperationsReducer,
-  displayValue: DisplayReducer,
+  displayState: DisplayReducer,
   memoryValue: MemoryReducer,
   prevValue: PrevValueReducer,
   resultValue: ResultReducer,
