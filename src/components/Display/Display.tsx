@@ -1,23 +1,25 @@
 import React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import { default as bemCssModules } from 'bem-css-modules';
 
-import { default as DisplayStyles } from './Display.module.scss';
-
-import { useSelector } from 'react-redux';
 import { IRootStore } from '../../_redux/stores/Interfaces/IRootStore';
-import SubDisplay from './SubDisplay/SubDisplay';
+
+import HistoryDisplay from './HistoryDisplay/HistoryDisplay';
+
+import { default as DisplayStyles } from './Display.module.scss';
 
 const style = bemCssModules(DisplayStyles);
 
 
 const Display: React.FC = () => {
-  const displayValue = useSelector((store: IRootStore) => store.DisplayValue);
+  const resultDisplayValue = useSelector((store: IRootStore) => store.displayState.resultDisplayValue);
 
   return (
     <div className={style()}>
-      <SubDisplay />
-      <p>{displayValue}</p>
+      <HistoryDisplay />
+      <p>{resultDisplayValue}</p>
     </div>
   );
 }
