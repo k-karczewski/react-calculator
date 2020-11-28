@@ -48,7 +48,13 @@ export const DisplayReducer = (state: IDisplayState = defaultState, action: IDis
       }
     }
     case CLEAR_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: defaultState.historyDisplayValue };
-    case UPDATE_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: `${state.historyDisplayValue}${action.payload?.content}` };
+    case UPDATE_HISTORY_DISPLAY_VALUE: {
+      if (!state.isHistoryUpdated) {
+        return { ...state, historyDisplayValue: `${state.historyDisplayValue}${action.payload?.content}` };
+      } else {
+        return state;
+      }
+    }
     case SET_HISTORY_DISPLAY_VALUE:
       if (action.payload) {
         return { ...state, historyDisplayValue: action.payload?.content }
