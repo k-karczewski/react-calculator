@@ -11,7 +11,7 @@ import { IDisplayAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState: IDisplayState = {
   isHistoryUpdated: false,
-  historyDisplayValue: '0',
+  historyDisplayValue: '',
   resultDisplayValue: '0'
 };
 
