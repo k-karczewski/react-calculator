@@ -9,6 +9,8 @@ import {
 import { IValuesAction } from '../actions/Interfaces/ICalculatorActions';
 import { IValuesState } from './Interfaces/ICalculatorReducers';
 
+import { Operations } from '../../types/Operations';
+
 const defaultState: IValuesState = {
   result: null,
   prevValue: null
@@ -18,7 +20,7 @@ export const ValuesReducer = (state: IValuesState = defaultState, action: IValue
   switch (action.type) {
     case CALCULATE_ONE_NUMBERED_OPERATION: {
       if (action.payload && action.payload.leftValue && action.payload.operation) {
-        if (action.payload.operation !== '%') {
+        if (action.payload.operation !== Operations.percent) {
           const calculationResult = performOneNumberedCalculation(action.payload.leftValue, action.payload.operation);
 
           if (!state.result || action.payload.equalsClicked === true) {
@@ -73,16 +75,16 @@ const performOneNumberedCalculation = (value: string, operation: string, baseVal
   let result: number = 0;
 
   switch (operation) {
-    case '1/x':
+    case Operations.invertion:
       result = 1 / Number(value);
       break;
-    case 'sqrt':
+    case Operations.squareRoot:
       result = Math.sqrt(Number(value));
       break;
-    case 'x2':
+    case Operations.squaredPower:
       result = Math.pow(Number(value), 2);
       break;
-    case '%':
+    case Operations.percent:
       if (baseValue && baseValue !== null) {
         result = Number(value) * Number(baseValue) / 100;
       } else {
@@ -97,16 +99,16 @@ const performTwoNumberedCalculation = (leftValue: string, rightValue: string, op
   let result: number = 0;
 
   switch (operation) {
-    case '+':
+    case Operations.addition:
       result = Number(leftValue) + Number(rightValue);
       break;
-    case '-':
+    case Operations.subtraction:
       result = Number(leftValue) - Number(rightValue);
       break;
-    case '*':
+    case Operations.multiplication:
       result = Number(leftValue) * Number(rightValue);
       break;
-    case '/':
+    case Operations.division:
       result = Number(leftValue) / Number(rightValue);
       break;
 
