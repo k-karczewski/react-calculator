@@ -205,7 +205,9 @@ export const Keyboard: React.FC = () => {
     if (equalsClicked && historyDisplayValue) {
       dispatch({ type: CLEAR_HISTORY_DISPLAY_VALUE });
     } else {
-      dispatch({ type: DELETE_LAST_CHAR_FROM_RESULT_DISPLAY });
+      if (!equalsClicked && !newOperationClicked && !specialOperationClicked) {
+        dispatch({ type: DELETE_LAST_CHAR_FROM_RESULT_DISPLAY });
+      }
     }
   }
 

@@ -20,7 +20,7 @@ export const DisplayReducer = (state: IDisplayState = defaultState, action: IDis
       if (state.resultDisplayValue.length > 1) {
         return { ...state, resultDisplayValue: state.resultDisplayValue.slice(0, state.resultDisplayValue.length - 1) };
       } else {
-        return defaultState;
+        return { ...state, resultDisplayValue: defaultState.resultDisplayValue };;
       }
     }
     case SET_RESULT_DISPLAY_VALUE: {
