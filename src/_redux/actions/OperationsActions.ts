@@ -27,14 +27,6 @@ export const setNewOperationAction: IOperationAction = {
   }
 };
 
-export const setSpecialOperationClickedAction: IOperationAction = {
-  type: UNSET_NEW_OPERATION_CLICKED
-}
-
-// export const newOperationActiveAction: IOperationAction = {
-//   type: SET_NEW_OPERATION_CLICKED
-// }
-
 export const unsetNewOperationClickedAction: IOperationAction = {
   type: UNSET_NEW_OPERATION_CLICKED
 }
