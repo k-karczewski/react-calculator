@@ -10,7 +10,6 @@ import { IDisplayState } from './Interfaces/ICalculatorReducers';
 import { IDisplayAction } from '../actions/Interfaces/ICalculatorActions';
 
 const defaultState: IDisplayState = {
-  isHistoryUpdated: false,
   historyDisplayValue: '',
   resultDisplayValue: '0'
 };
@@ -48,13 +47,7 @@ export const DisplayReducer = (state: IDisplayState = defaultState, action: IDis
       }
     }
     case CLEAR_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: defaultState.historyDisplayValue };
-    case UPDATE_HISTORY_DISPLAY_VALUE: {
-      if (!state.isHistoryUpdated) {
-        return { ...state, historyDisplayValue: `${state.historyDisplayValue}${action.payload?.content}` };
-      } else {
-        return state;
-      }
-    }
+    case UPDATE_HISTORY_DISPLAY_VALUE: return { ...state, historyDisplayValue: `${state.historyDisplayValue}${action.payload?.content}` };
     case SET_HISTORY_DISPLAY_VALUE:
       if (action.payload) {
         return { ...state, historyDisplayValue: action.payload?.content }
