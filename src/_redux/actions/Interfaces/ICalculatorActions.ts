@@ -27,7 +27,7 @@ export interface IOperationAction {
 export interface IValuesAction {
   type: string,
   payload?: {
-    equalsClicked?: boolean
+    firstValueFilled?: boolean
     leftValue: string,
     operation?: string,
     rightValue?: string,
