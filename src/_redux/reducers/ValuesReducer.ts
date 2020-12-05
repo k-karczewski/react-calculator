@@ -23,7 +23,7 @@ export const ValuesReducer = (state: IValuesState = defaultState, action: IValue
         if (action.payload.operation !== Operations.percent) {
           const calculationResult = performOneNumberedCalculation(action.payload.leftValue, action.payload.operation);
 
-          if (!state.result || action.payload.equalsClicked === true) {
+          if (!action.payload.firstValueFilled) {
             return { result: calculationResult, prevValue: defaultState.prevValue };
           } else {
             return { ...state, prevValue: calculationResult }
@@ -31,7 +31,6 @@ export const ValuesReducer = (state: IValuesState = defaultState, action: IValue
         } else {
 
           const calculationResult = performOneNumberedCalculation(action.payload.leftValue, action.payload.operation, state.result);
-          debugger
           if (!state.result) {
             return { result: calculationResult, prevValue: defaultState.prevValue };
           } else {
