@@ -228,8 +228,8 @@ export const Keyboard: React.FC = () => {
     const historyUpdateStartIndex = operation ? historyDisplayValue.lastIndexOf(operation) + 2 : 0;
     let historyDisplayUpdate = '';
 
-    const unchangedHistory = historyUpdateStartIndex > 0 ? historyDisplayValue.slice(0, historyUpdateStartIndex) : '';
-    const valueToUpdate = (historyDisplayValue.slice(historyUpdateStartIndex).length > 0) ?
+    const unchangedHistory = !equalsClicked && historyUpdateStartIndex > 0 ? historyDisplayValue.slice(0, historyUpdateStartIndex) : '';
+    const valueToUpdate = !equalsClicked && (historyDisplayValue.slice(historyUpdateStartIndex).length > 0) ?
       historyDisplayValue.slice(historyUpdateStartIndex) : resultDisplayValue;
 
     switch (clickedSpecialOperation) {
