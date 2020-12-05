@@ -167,7 +167,7 @@ export const Keyboard: React.FC = () => {
     // new operation has been clicked - remember state and operation value
     dispatch({ type: SET_NEW_OPERATION, payload: { operation: currentTarget.value } });
 
-    if (!newOperationClicked && !equalsClicked) {
+    if (!newOperationClicked && !equalsClicked && !specialOperationClicked) {
       // if no result has not been calculated yet, take display value and remember it
       if (result === null) {
         dispatch({ type: REMEMBER_VALUE_WITHOUT_CALCULATION, payload: { leftValue: resultDisplayValue } });
@@ -184,14 +184,12 @@ export const Keyboard: React.FC = () => {
         });
       }
 
-      if (!specialOperationClicked) {
-        dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${resultDisplayValue} ${currentTarget.value} ` } });
-      } else {
-        dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${currentTarget.value} ` } });
-      }
+      dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${resultDisplayValue} ${currentTarget.value} ` } });
     } else if (equalsClicked) {
       // user has chosen new operation on calculation result - update subdisplay (result and operation)
       dispatch({ type: SET_HISTORY_DISPLAY_VALUE, payload: { content: `${resultDisplayValue} ${currentTarget.value} ` } });
+    } else if (specialOperationClicked) {
+      dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${currentTarget.value} ` } });
     } else {
       // user changed operation - update subdisplay - (only two last chars)
       const updatedHistoryDisplayValue = `${historyDisplayValue.slice(0, historyDisplayValue.length - 2)} ${currentTarget.value} `;
