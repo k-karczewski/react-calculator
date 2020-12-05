@@ -53,6 +53,13 @@ export const Keyboard: React.FC = () => {
     }
   }, [dispatch, result])
 
+  useEffect(() => {
+    // update display when prevValue has been updated only 
+    if (specialOperationClicked && prevValue !== null) {
+      dispatch({ type: SET_RESULT_DISPLAY_VALUE, payload: { content: prevValue } });
+    }
+  }, [dispatch, specialOperationClicked, prevValue])
+
   /**
    * Description: Resets calculator to initial state
    * Parameters: none
@@ -84,7 +91,7 @@ export const Keyboard: React.FC = () => {
     if (newOperationClicked) {
       dispatch({ type: UNSET_NEW_OPERATION_CLICKED });
       dispatch({ type: CLEAR_PREV_VALUE });
-    } else if (equalsClicked) {
+    } else if (equalsClicked || specialOperationClicked) {
       dispatch({ type: RESET_CALCULATOR });
     }
     // and show new typed value as new one on display
@@ -97,7 +104,6 @@ export const Keyboard: React.FC = () => {
    * Returns: void
    */
   const handleEqualsClick = (): void => {
-
     const leftValue = result;
     // if equals has been clicked again perform last operation
     const rightValue = prevValue ? prevValue : resultDisplayValue;
@@ -160,7 +166,6 @@ export const Keyboard: React.FC = () => {
     dispatch({ type: UNSET_SPECIAL_OPERATION_CLICKED });
     // new operation has been clicked - remember state and operation value
     dispatch({ type: SET_NEW_OPERATION, payload: { operation: currentTarget.value } });
-    // dispatch({ type: SET_HISTORY_DISPLAY_UPDATED });
 
     if (!newOperationClicked && !equalsClicked) {
       // if no result has not been calculated yet, take display value and remember it
@@ -168,16 +173,15 @@ export const Keyboard: React.FC = () => {
         dispatch({ type: REMEMBER_VALUE_WITHOUT_CALCULATION, payload: { leftValue: resultDisplayValue } });
       } else {
         // perform calculation when left value is saved and right value is available on display
-        if (!specialOperationClicked) {
-          dispatch({
-            type: CALCULATE_TWO_NUMBERED_OPERATION,
-            payload: {
-              leftValue: result,
-              rightValue: resultDisplayValue,
-              operation
-            }
-          });
-        }
+
+        dispatch({
+          type: CALCULATE_TWO_NUMBERED_OPERATION,
+          payload: {
+            leftValue: result,
+            rightValue: resultDisplayValue,
+            operation
+          }
+        });
       }
 
       if (!specialOperationClicked) {
@@ -195,7 +199,6 @@ export const Keyboard: React.FC = () => {
     }
   }
 
-
   /**
    * Description: Removes last char of result display or clears history when equals was clicked
    * Parameters: none
@@ -211,7 +214,6 @@ export const Keyboard: React.FC = () => {
     }
   }
 
-
   /**
    * Description: Handles special operations such sqrt, sqr, percent and invertion. 
    * Parameters: 
@@ -219,45 +221,52 @@ export const Keyboard: React.FC = () => {
    * Returns: void
    */
   const handleSpecialOperations = ({ currentTarget }: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    debugger
-    let historyDisplayUpdate = '';
-    const operation = currentTarget.value;
+    const clickedSpecialOperation = currentTarget.value;
+    dispatch({ type: SET_SPECIAL_OPERATION_CLICKED })
 
-    switch (operation) {
+    // 0 - value stays the same as before
+    const historyUpdateStartIndex = operation ? historyDisplayValue.lastIndexOf(operation) + 2 : 0;
+    let historyDisplayUpdate = '';
+
+    const unchangedHistory = historyUpdateStartIndex > 0 ? historyDisplayValue.slice(0, historyUpdateStartIndex) : '';
+    const valueToUpdate = (historyDisplayValue.slice(historyUpdateStartIndex).length > 0) ?
+      historyDisplayValue.slice(historyUpdateStartIndex) : resultDisplayValue;
+
+    switch (clickedSpecialOperation) {
       case Operations.squareRoot:
-        historyDisplayUpdate = `sqrt(${resultDisplayValue})  `;
+        historyDisplayUpdate = `${unchangedHistory}sqrt(${valueToUpdate.trim()}) `
         break;
       case Operations.squaredPower:
-        historyDisplayUpdate = `sqr(${resultDisplayValue})  `;
+        historyDisplayUpdate = `${unchangedHistory}sqr(${valueToUpdate.trim()}) `
         break;
       case Operations.invertion:
-        historyDisplayUpdate = `1/(${resultDisplayValue})  `;
+        historyDisplayUpdate = `${unchangedHistory}1/(${valueToUpdate.trim()}) `
         break;
       case Operations.percent:
-        if (result)
-          historyDisplayUpdate = `${resultDisplayValue}%  `;
-        else
+        if (result) {
+          const percentResult = String(Number(resultDisplayValue) * Number(result) / 100);
+          historyDisplayUpdate = `${unchangedHistory}${percentResult}  `;
+        }
+        else {
           historyDisplayUpdate = `0  `;
+        }
         break;
     }
 
     if (equalsClicked) {
       dispatch({ type: CLEAR_PREV_VALUE });
       dispatch({ type: UNSET_EQUALS_CLICKED });
-      dispatch({ type: SET_HISTORY_DISPLAY_VALUE, payload: { content: historyDisplayUpdate } });
-    } else {
-      dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: historyDisplayUpdate } });
     }
+
+    dispatch({ type: SET_HISTORY_DISPLAY_VALUE, payload: { content: historyDisplayUpdate } });
 
     dispatch({
       type: CALCULATE_ONE_NUMBERED_OPERATION, payload: {
         leftValue: resultDisplayValue,
-        operation,
-        equalsClicked: equalsClicked
+        operation: clickedSpecialOperation,
+        firstValueFilled: (!equalsClicked) && (result !== null && operation !== null) ? true : false
       }
     });
-
-    dispatch({ type: SET_SPECIAL_OPERATION_CLICKED })
   }
 
   return (
