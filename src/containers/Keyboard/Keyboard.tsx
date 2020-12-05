@@ -108,22 +108,22 @@ export const Keyboard: React.FC = () => {
     // if equals has been clicked again perform last operation
     const rightValue = prevValue ? prevValue : resultDisplayValue;
 
-    if (!equalsClicked) {
-      // remember that equals has been clicked
-      dispatch({ type: SET_EQUALS_CLICKED })
-      // remember right value
-      dispatch({ type: SET_PREV_VALUE, payload: { leftValue: rightValue } });
-
-      if (!specialOperationClicked) {
-        dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${resultDisplayValue} = ` } })
-      } else {
-        dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `= ` } })
-      }
-    } else {
-      dispatch({ type: SET_HISTORY_DISPLAY_VALUE, payload: { content: `${leftValue} ${operation} ${rightValue} = ` } })
-    }
-
     if (rightValue && operation) {
+      if (!equalsClicked) {
+        // remember that equals has been clicked
+        dispatch({ type: SET_EQUALS_CLICKED })
+        // remember right value
+        dispatch({ type: SET_PREV_VALUE, payload: { leftValue: rightValue } });
+
+        if (!specialOperationClicked) {
+          dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `${resultDisplayValue} = ` } })
+        } else {
+          dispatch({ type: UPDATE_HISTORY_DISPLAY_VALUE, payload: { content: `= ` } })
+        }
+      } else {
+        dispatch({ type: SET_HISTORY_DISPLAY_VALUE, payload: { content: `${leftValue} ${operation} ${rightValue} = ` } })
+      }
+
       dispatch({
         type: CALCULATE_TWO_NUMBERED_OPERATION,
         payload: {
@@ -132,9 +132,9 @@ export const Keyboard: React.FC = () => {
           operation
         }
       });
-    }
 
-    dispatch({ type: UNSET_SPECIAL_OPERATION_CLICKED });
+      dispatch({ type: UNSET_SPECIAL_OPERATION_CLICKED });
+    }
   }
 
   /**
